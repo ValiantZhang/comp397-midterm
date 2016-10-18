@@ -50,7 +50,7 @@ var scenes;
             }
         };
         Play.prototype._getRandomHealth = function () {
-            return Math.floor(Math.random() * ((6 - 1 + 1) + 1));
+            return Math.floor(Math.random() * ((5 - 1 + 1) + 1));
         };
         Play.prototype._getRandomSpawn = function () {
             return Math.floor(Math.random() * ((200 - 1 + 1) + 1));

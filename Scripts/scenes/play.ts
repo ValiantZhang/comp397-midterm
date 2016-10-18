@@ -70,7 +70,7 @@ module scenes {
         }
         
         private _getRandomHealth() {
-            return Math.floor(Math.random() * ((6 - 1 + 1) + 1));
+            return Math.floor(Math.random() * ((5 - 1 + 1) + 1));
         }
         
         private _getRandomSpawn() {
