@@ -11,6 +11,8 @@ module scenes {
         // Button 
         private _playBtn : objects.Button;
         private _menuBG : createjs.Bitmap;
+        private _titleLabel : objects.Label;
+        private _bgBlur : createjs.BlurFilter;
         
         
         // Menu Class Contructor
@@ -23,6 +25,15 @@ module scenes {
             
             this._menuBG = new createjs.Bitmap(assets.getResult("MenuBG"));
             this.addChild(this._menuBG);
+            
+            this._bgBlur = new createjs.BlurFilter(5, 5, 1);
+            this._menuBG.filters = [this._bgBlur];
+            
+            this._titleLabel = new objects.Label("COPS AND ROBBERS",
+                "40px Impact", "#000000", config.Screen.CENTER_X, config.Screen.CENTER_Y - 250);
+            this._titleLabel.lineWidth = 900;
+            this._titleLabel.lineHeight = 30;
+            this.addChild(this._titleLabel);
 
             this._playBtn = new objects.Button("PlayBtn", config.Screen.CENTER_X, config.Screen.CENTER_Y + 150);
             this.addChild(this._playBtn);

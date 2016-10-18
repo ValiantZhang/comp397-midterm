@@ -3,6 +3,7 @@ module objects {
 
         private _move : objects.Vector2;
         private _speed : number;
+        private _waitToDestroy : number;
 
         private _life : number;
 
@@ -14,6 +15,7 @@ module objects {
 
         constructor(imageString:string, life : number) {
             super(enemyAtlas, imageString, "enemy");
+            this.gotoAndStop("enemy");
             this._life = life;
             
             this.on("mousedown", this.checkHealth, this);
@@ -24,6 +26,9 @@ module objects {
         }
 
         public update() : void {
+            if (this.currentAnimationFrame >= 3){
+                this.destroy();
+                }
         }
 
         public setPosition(pos : objects.Vector2) : void {
@@ -41,17 +46,19 @@ module objects {
         
         checkHealth(event:createjs.MouseEvent) : void{
             if (this._life <= 0){
-                this.destroy();
+                this.gotoAndPlay("poof");
+                
             }
+
             else {
                 this.shot();
             }
         }
         
         destroy() : void{
-            currentScene.removeChild(this);
             isRobberSpawned = false;
             score += 5;
+            currentScene.removeChild(this);
             currentScene.update();
         }
 

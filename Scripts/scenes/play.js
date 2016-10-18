@@ -25,6 +25,10 @@ var scenes;
             this._scoreLabel.lineWidth = 900;
             this._scoreLabel.lineHeight = 30;
             this.addChild(this._scoreLabel);
+            this._enemyHealthLabel = new objects.Label(" ", "25px Impact", "#D4FF00", config.Screen.CENTER_X - 300, config.Screen.CENTER_Y - 250);
+            this._enemyHealthLabel.lineWidth = 900;
+            this._enemyHealthLabel.lineHeight = 30;
+            this.addChild(this._enemyHealthLabel);
             stage.addChild(this);
         };
         Play.prototype.update = function () {
@@ -33,6 +37,7 @@ var scenes;
             this._enemy.update();
             this._updateScore();
             this._updateCursor();
+            this._updateEnemyHealthDisplay();
             stage.update();
         };
         Play.prototype._spawnEnemy = function () {
@@ -40,12 +45,12 @@ var scenes;
                 this._enemy = new objects.Enemy("Enemy", this._enemyHealth);
                 this._enemy.x = config.Screen.CENTER_X + this._getRandomSpawn();
                 this._enemy.y = config.Screen.CENTER_Y + this._getRandomSpawn();
-                this.addChild(this._enemy);
+                this.addChildAt(this._enemy, 2);
                 isRobberSpawned = true;
             }
         };
         Play.prototype._getRandomHealth = function () {
-            return Math.floor(Math.random() * ((5 - 1 + 1) + 1));
+            return Math.floor(Math.random() * ((6 - 1 + 1) + 1));
         };
         Play.prototype._getRandomSpawn = function () {
             return Math.floor(Math.random() * ((200 - 1 + 1) + 1));
@@ -53,9 +58,15 @@ var scenes;
         Play.prototype._updateScore = function () {
             this._scoreLabel.text = "Score: " + score;
         };
+        Play.prototype._updateEnemyHealthDisplay = function () {
+            this._enemyHealthLabel.text = "Health: " + this._enemy.life;
+            this._enemyHealthLabel.x = stage.mouseX - 50;
+            this._enemyHealthLabel.y = stage.mouseY - 50;
+        };
         Play.prototype._updateCursor = function () {
             this._cursor.x = stage.mouseX;
             this._cursor.y = stage.mouseY;
+            stage.setChildIndex(this._cursor, stage.getNumChildren() + 500);
         };
         Play.prototype._onEnemyClick = function (event) {
         };

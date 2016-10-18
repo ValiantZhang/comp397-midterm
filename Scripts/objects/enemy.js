@@ -9,6 +9,7 @@ var objects;
         __extends(Enemy, _super);
         function Enemy(imageString, life) {
             _super.call(this, enemyAtlas, imageString, "enemy");
+            this.gotoAndStop("enemy");
             this._life = life;
             this.on("mousedown", this.checkHealth, this);
         }
@@ -20,6 +21,9 @@ var objects;
             configurable: true
         });
         Enemy.prototype.update = function () {
+            if (this.currentAnimationFrame >= 3) {
+                this.destroy();
+            }
         };
         Enemy.prototype.setPosition = function (pos) {
             this.x = pos.x;
@@ -33,16 +37,16 @@ var objects;
         };
         Enemy.prototype.checkHealth = function (event) {
             if (this._life <= 0) {
-                this.destroy();
+                this.gotoAndPlay("poof");
             }
             else {
                 this.shot();
             }
         };
         Enemy.prototype.destroy = function () {
-            currentScene.removeChild(this);
             isRobberSpawned = false;
             score += 5;
+            currentScene.removeChild(this);
             currentScene.update();
         };
         return Enemy;

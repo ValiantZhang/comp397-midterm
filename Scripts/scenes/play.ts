@@ -5,6 +5,7 @@ module scenes {
         private _enemy : objects.Enemy;
         private _cursor : createjs.Bitmap;
         private _scoreLabel : objects.Label;
+        private _enemyHealthLabel : objects.Label;
         
         private _randomNum : Number;
         private _currentTick : Number;
@@ -33,6 +34,12 @@ module scenes {
             this._scoreLabel.lineWidth = 900;
             this._scoreLabel.lineHeight = 30;
             this.addChild(this._scoreLabel);
+            
+            this._enemyHealthLabel = new objects.Label(" ",
+                "25px Impact", "#D4FF00", config.Screen.CENTER_X - 300, config.Screen.CENTER_Y - 250);
+            this._enemyHealthLabel.lineWidth = 900;
+            this._enemyHealthLabel.lineHeight = 30;
+            this.addChild(this._enemyHealthLabel);
 
             stage.addChild(this);
         }
@@ -45,6 +52,7 @@ module scenes {
             this._enemy.update();
             this._updateScore();
             this._updateCursor();
+            this._updateEnemyHealthDisplay();
             
             stage.update();
         }
@@ -55,14 +63,14 @@ module scenes {
                 this._enemy = new objects.Enemy("Enemy", this._enemyHealth);
                 this._enemy.x = config.Screen.CENTER_X + this._getRandomSpawn();
                 this._enemy.y = config.Screen.CENTER_Y + this._getRandomSpawn();
-                this.addChild(this._enemy);
+                this.addChildAt(this._enemy, 2);
                 isRobberSpawned = true;
             }
 
         }
         
         private _getRandomHealth() {
-            return Math.floor(Math.random() * ((5 - 1 + 1) + 1));
+            return Math.floor(Math.random() * ((6 - 1 + 1) + 1));
         }
         
         private _getRandomSpawn() {
@@ -73,9 +81,16 @@ module scenes {
             this._scoreLabel.text = "Score: " + score;
         }
         
+        private _updateEnemyHealthDisplay(){
+            this._enemyHealthLabel.text = "Health: " + this._enemy.life;
+            this._enemyHealthLabel.x = stage.mouseX - 50;
+            this._enemyHealthLabel.y = stage.mouseY - 50;
+        }
+        
         private _updateCursor(){
             this._cursor.x = stage.mouseX;
             this._cursor.y = stage.mouseY;
+            stage.setChildIndex( this._cursor, stage.getNumChildren()+500);
         }
 
         private _onEnemyClick(event : createjs.MouseEvent) : void {
