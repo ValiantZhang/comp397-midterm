@@ -13,8 +13,10 @@ module objects {
         public center:objects.Vector2;
 
         constructor(imageString:string, life : number) {
-            super(enemyAtlas, imageString, "");
+            super(enemyAtlas, imageString, "enemy");
             this._life = life;
+            
+            this.on("mousedown", this.checkHealth, this);
         }
 
         get life() : number {
@@ -36,9 +38,22 @@ module objects {
         public shot() : void {
             this._life--;
         }
-
-        private _dead() : void {
-            currentScene.removeChild(this);
+        
+        checkHealth(event:createjs.MouseEvent) : void{
+            if (this._life <= 0){
+                this.destroy();
+            }
+            else {
+                this.shot();
+            }
         }
+        
+        destroy() : void{
+            currentScene.removeChild(this);
+            isRobberSpawned = false;
+            score += 5;
+            currentScene.update();
+        }
+
     }
 }

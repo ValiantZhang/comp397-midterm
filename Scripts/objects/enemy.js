@@ -8,8 +8,9 @@ var objects;
     var Enemy = (function (_super) {
         __extends(Enemy, _super);
         function Enemy(imageString, life) {
-            _super.call(this, enemyAtlas, imageString, "");
+            _super.call(this, enemyAtlas, imageString, "enemy");
             this._life = life;
+            this.on("mousedown", this.checkHealth, this);
         }
         Object.defineProperty(Enemy.prototype, "life", {
             get: function () {
@@ -30,8 +31,19 @@ var objects;
         Enemy.prototype.shot = function () {
             this._life--;
         };
-        Enemy.prototype._dead = function () {
+        Enemy.prototype.checkHealth = function (event) {
+            if (this._life <= 0) {
+                this.destroy();
+            }
+            else {
+                this.shot();
+            }
+        };
+        Enemy.prototype.destroy = function () {
             currentScene.removeChild(this);
+            isRobberSpawned = false;
+            score += 5;
+            currentScene.update();
         };
         return Enemy;
     }(objects.GameObject));
